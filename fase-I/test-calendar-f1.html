@@ -44,36 +44,12 @@
 </div>
 
 <script>
-/*
-  - poden haver-hi varis franges d'un esdeveniment d'un mateix dia
-  - funció de l'API https://developers.google.com/calendar/v3/reference/events/list
-  - conveni: cada calendari només tindrà esdeveniments d'una sola categoria
-*/
-
-  /* array de calendaris on cada element es descripció + ID */
 
 
   var calendaris = [
     //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
     ["Horaris-f1","upf.edu_gmje4a96i99klhnjvn4g8spbbk@group.calendar.google.com"]];
 
-/*
-  var calendaris2 = [
-    //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
-    ["cal1","upf.edu_e2n390d9mcbgvnppdqqcfqdjbg@group.calendar.google.com"],
-    //cal 2 - "Horaris - cal2" de serveisweb@upf.edu
-    ["cal2","upf.edu_ni0cto2b16h0gfat0skinom2bo@group.calendar.google.com"]
-  ];
-*/
-
-  /* dia que determinarà la setmana a pintar a la web
-  */
-  /*
-  var data_calcul_setmana = new Date();
-  Date.now();
-  */
-
-  var data_calcul_setmana = new Date(2020, 02, 03, 10, 33, 30, 0);
 
 	/** API_KEY *********************************
   * AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM   *
@@ -92,22 +68,12 @@
 
 <script>
 
-  iniTaulaCalHTML();
-
   tractaCalendaris();
 
 
-
+/**********************************************************************************************************/
 /* funcions ***********************************************************************************************/
-
-/**
- * Calculate calendar header. Determine the week to represent based on a date
- *
- * @param {date} referenceDate reference date to determine the week
- */
-  function iniTaulaCalHTML(){
-    return true;
-  }
+/**********************************************************************************************************/
 
 /**
  * Every calebdar is a row in the calendar table
@@ -230,6 +196,10 @@ function addZero(i) {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
+
+/**********************************************************************************************************/
+/* CSS ****************************************************************************************************/
+/**********************************************************************************************************/
 
 .nav_calendari button {
   border: 1px solid #ddd;
