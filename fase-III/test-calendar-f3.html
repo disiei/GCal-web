@@ -1,0 +1,394 @@
+<h2>Horaris Poblenou</h2>
+
+<div class="nav_calendari">
+ <button aria-label="Horaris d'avui" title="Divendres, 07 de febrer">Avui</button>
+ <div aria-label="Horaris de la setmana anterior" class="nav_anterior" role="button" title="setmana anterior">
+   <i class="icon-chevron-left"></i>
+ </div>
+ <div aria-label="Horaris de la setmana següent" class="nav_seguent" role="button" title="setmana següent">
+   <i class="icon-chevron-right"></i>
+ </div>
+ <span class="mes_avui">Febrer 2020</span>
+</div>
+
+<div class="hores_calendari">
+ <table>
+   <thead>
+     <tr>
+       <th>&nbsp;</th>
+       <th scope="col">
+         <span class="etq_dia">Dl.</span>
+         <span class="etq_num_dia">3</span>
+       </th>
+       <th scope="col"><span class="etq_dia">Dm.</span> <span class="etq_num_dia">4</span></th>
+       <th scope="col"><span class="etq_dia">Dc.</span> <span class="etq_num_dia">5</span></th>
+       <th scope="col"><span class="etq_dia">Dj.</span> <span class="etq_num_dia">6</span></th>
+       <th class="avui" scope="col"><span class="etq_dia">Dv.</span> <span class="etq_num_dia">7</span></th>
+       <th scope="col"><span class="etq_dia">Ds.</span> <span class="etq_num_dia">8</span></th>
+       <th scope="col"><span class="etq_dia">Dg.</span> <span class="etq_num_dia">9</span></th>
+     </tr>
+   </thead>
+   <tbody id="cosCalendari">
+     <tr>
+       <td class="servei"><i class="icon-time"></i><strong>Obertura</strong></td>
+       <td class="hores" data-label="Dilluns 3">08.00 - 21.00</td>
+       <td class="hores" data-label="Dimarts 4">08.00 - 21.00</td>
+       <td class="hores" data-label="Dimecres 5">08.00 - 21.00</td>
+       <td class="hores" data-label="Dijous 6">08.00 - 21.00</td>
+       <td class="hores avui" data-label="Divendres 7">08.00 - 21.00</td>
+       <td class="hores" data-label="Dissabte 8">TANCAT</td>
+       <td class="hores" data-label="Diumenge 9">TANCAT</td>
+     </tr>
+   </tbody>
+ </table>
+</div>
+
+<!--
+/**********************************************************************************************************/
+/* JS *****************************************************************************************************/
+/**********************************************************************************************************/
+-->
+
+<script src="https://apis.google.com/js/api.js"></script>
+
+<script>
+
+
+ var calendaris = [
+   //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
+   ["Horaris-f3-A","upf.edu_0grre0mvt4tvq00u79sia8i3f4@group.calendar.google.com"],
+   ["Horaris-f3-B","upf.edu_uh37vcprrgl9t7m4k5gr4m6a34@group.calendar.google.com"]
+   ];
+
+
+ /** API_KEY *********************************
+ * AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM   *
+ * Propietari serveisweb@upf.edu             *
+ * Projecte  horarisDemo                     *
+ ********************************************/
+ var API_KEY = 'AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM';
+ var DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+ var calEnCurs;
+
+
+  function handleClientLoad() {
+      gapi.load('client', initClient);
+    }
+
+    function initClient() {
+      gapi.client.init({
+        apiKey: API_KEY,
+        discoveryDocs:  DISCOVERY_DOCS
+      }).then(tractaCalendaris)
+    }
+
+    function tractaCalendaris(){
+      var batch = gapi.client.newBatch();
+
+      var calRequest = function(calID) {
+        return gapi.client.calendar.events.list({
+          'calendarId': calID,
+          'timeMin': "2020-02-03T00:00:00+01:00",
+          'timeMax': "2020-02-10T00:00:00+01:00",
+          'showDeleted': false,
+          'singleEvents': true,
+          'orderBy': 'startTime'
+        });
+      };
+
+      for (var i = 0; i < calendaris.length; i++) {
+        batch.add(calRequest(calendaris[i][1]),{id:calendaris[i][0]});
+      };
+
+      batch.then(function(response) {
+        var respCalendaris = response.result;
+        for (var i = 0; i < calendaris.length; i++) {
+          tractaCalendari(calendaris[i][0], respCalendaris[calendaris[i][0]].result.items)
+        }
+      })
+    };
+
+
+/**
+ * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+ *
+ * @param {string} message Text to be placed in pre element.
+ */
+ function tractaCalendari(nomCal, eventsCal){
+   var setmanaEvents = [];
+
+   if (eventsCal.length > 0) {
+     for (i = 0; i < eventsCal.length; i++) {
+       var event = eventsCal[i];
+       var eventStart = new Date(event.start.dateTime);
+       var eventEnd = new Date(event.end.dateTime);
+       setmanaEvents[i] = addZero(eventStart.getHours()) + ":" + addZero(eventStart.getMinutes()) + " - " + addZero(eventEnd.getHours()) + ":" + addZero(eventEnd.getMinutes());
+     }
+     generaFilaCalHTML(nomCal,setmanaEvents);
+   }
+ };
+
+/**
+ * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+ *
+ * @param {string} message Text to be placed in pre element.
+ */
+ function generaFilaCalHTML(nomServei,setmanaEvents){
+   //creem la fila
+   var tr = document.createElement("TR");
+   tr.setAttribute("id", nomServei);
+   document.getElementById("cosCalendari").appendChild(tr);
+
+   // afegim descripció de la fila (1a columna)
+   var strong = document.createElement("STRONG");
+   var strongText = document.createTextNode(nomServei);
+   strong.appendChild(strongText);
+
+
+   var italic = document.createElement("I");
+   italic.setAttribute("class", "icon-time");
+
+   var td = document.createElement("TD");
+   //var textCela = document.createTextNode("<strong>" + nomServei + "</strong>");
+   tr.setAttribute("servei", nomServei);
+   td.setAttribute("class","servei");
+   td.appendChild(italic);
+   td.appendChild(strong);
+   document.getElementById(nomServei).appendChild(td);
+
+   // afegim cel·les
+   var i;
+   for (i = 0; i < setmanaEvents.length; i++) {
+      var td = document.createElement("TD");
+      if (i == 4){
+        td.setAttribute("class","hores avui");
+      }else{
+        td.setAttribute("class","hores");
+      };
+
+      var textCela = document.createTextNode(setmanaEvents[i]);
+      td.appendChild(textCela);
+      document.getElementById(nomServei).appendChild(td);
+   }
+ }
+
+ /**
+  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+  *
+  * @param {string} message Text to be placed in pre element.
+  */
+function addZero(i) {
+if (i < 10) {
+  i = "0" + i;
+}
+return i;
+}
+
+
+</script>
+
+<script async defer src="https://apis.google.com/js/api.js"
+  onload="this.onload=function(){};handleClientLoad();"
+  onreadystatechange="if (this.readyState === 'complete') this.onload();">
+</script>
+
+
+<!--
+/**********************************************************************************************************/
+/* CSS ****************************************************************************************************/
+/**********************************************************************************************************/
+-->
+
+<style type="text/css">.nav_calendari {
+ border-bottom: 1px solid #ddd;
+ padding-bottom: 10px;
+}
+
+.nav_calendari button {
+ border: 1px solid #ddd;
+ background-color: transparent;
+ padding: 5px 10px;
+ margin-right: 12px;
+}
+
+.nav_calendari button:hover {
+ background-color: #eee;
+}
+
+.nav_calendari .nav_anterior, .nav_calendari .nav_seguent {
+ line-height: 32px;
+ font-size: 16px;
+ cursor: pointer;
+ display: inline-block;
+ text-align: center;
+ width: 32px;
+ height: 32px;
+}
+
+.nav_calendari .nav_anterior:hover, .nav_calendari .nav_seguent:hover {
+ border-radius: 100%;
+ background-color: #eee;
+}
+
+
+.nav_calendari .mes_avui {
+ font-size: 22px;
+ margin-left: 12px;
+}
+
+.aui .table-bordered {
+ border: none;
+}
+
+.aui .table-bordered th, .aui .table-bordered td {
+ border: none;
+ border-top: 1px solid #ddd;
+ vertical-align: middle;
+}
+
+.aui .table-bordered tr:last-child td {
+ border-bottom: 1px solid #ddd;
+}
+
+.hores_calendari .etq_dia {
+ font-family: Roboto,Helvetica,Arial,sans-serif;
+ -webkit-font-smoothing: antialiased;
+ text-rendering: geometricPrecision;
+ line-height: 32px;
+ font-size: 11px;
+ font-weight: 500;
+ text-transform: uppercase;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ margin-left: auto;
+ margin-right: auto;
+ width: 22px;
+}
+
+.hores_calendari .etq_num_dia {
+ font-family: 'Google Sans',Roboto,Arial,sans-serif;
+ -webkit-font-smoothing: antialiased;
+ text-rendering: geometricPrecision;
+ font-weight: 400;
+ text-align: center;
+ z-index: 2;
+ font-size: 26px;
+ line-height: 46px;
+ height: 46px;
+ width: 46px;
+ margin-left: auto;
+ margin-right: auto;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+
+.hores_calendari td i {
+ color: #ccc;
+ margin-right: 8px;
+ font-size: 18px;
+}
+
+.hores_calendari td.servei{
+ text-indent: -12px;
+ padding-left: 25px
+}
+
+.hores_calendari td.hores {
+ font-family: Roboto,Helvetica,Arial,sans-serif;
+ text-rendering: geometricPrecision;
+ font-size: 14px;
+ text-align: center;
+}
+
+.hores_calendari table {
+ border-collapse: collapse;
+ margin: 0;
+ padding: 0;
+}
+
+.hores_calendari table caption {
+ font-size: 1.5em;
+ margin: .5em 0 .75em;
+}
+
+.hores_calendari table tr {
+ padding: .35em;
+}
+
+.hores_calendari table th,
+.hores_calendari table td {
+ padding: .625em;
+}
+
+.hores_calendari table th {
+ font-size: .85em;
+ letter-spacing: .1em;
+ text-transform: uppercase;
+ border: none!important;
+}
+
+.hores_calendari table td.avui {
+ background-color: #eee;
+}
+
+.hores_calendari table th.avui .etq_num_dia {
+ background-color: #eeb7c0;
+ border-radius:100%;
+}
+
+
+@media screen and (max-width: 700px) {
+
+ .nav_calendari .mes_avui {
+   font-size: 16px;
+ }
+
+ .hores_calendari table {
+   border: 0;
+ }
+
+ table caption {
+   font-size: 1.3em;
+ }
+
+ .hores_calendari table thead {
+   border: none;
+   clip: rect(0 0 0 0);
+   height: 1px;
+   margin: -1px;
+   overflow: hidden;
+   padding: 0;
+   position: absolute;
+   width: 1px;
+ }
+
+ .hores_calendari table tr {
+   border: none;
+   border-bottom: 3px solid #ddd;
+   display: block;
+   margin-bottom: .625em;
+ }
+
+ .hores_calendari table td {
+   border: none;
+   border-bottom: 1px solid #ddd;
+   display: block;
+ }
+
+ .hores_calendari td.hores {
+   text-align: right!important;
+ }
+
+ .hores_calendari table td.hores::before {
+   content: attr(data-label);
+   float: left;
+/*    text-transform: uppercase;*/
+ }
+
+ .hores_calendari table td:last-child {
+   border-bottom: 0;
+ }
+}
+</style>
