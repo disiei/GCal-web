@@ -1,61 +1,81 @@
 <h2>Horaris Poblenou</h2>
 
 <div class="nav_calendari">
- <button aria-label="Horaris d'avui" title="Divendres, 07 de febrer">Avui</button>
- <div aria-label="Horaris de la setmana anterior" class="nav_anterior" role="button" title="setmana anterior">
-   <i class="icon-chevron-left"></i>
- </div>
- <div aria-label="Horaris de la setmana següent" class="nav_seguent" role="button" title="setmana següent">
-   <i class="icon-chevron-right"></i>
- </div>
- <span class="mes_avui">Febrer 2020</span>
+  <button onclick="calculaSetmanaAvui()"aria-label="Horaris d'avui" title="Divendres, 07 de febrer">Avui</button>
+
+  <div onclick="calculaSetmana(diaRefCal,-7)" aria-label="Horaris de la setmana anterior" class="nav_anterior" role="button" title="setmana anterior">
+    <i class="icon-chevron-left"></i>
+  </div>
+
+  <div onclick="calculaSetmana(diaRefCal,7)" aria-label="Horaris de la setmana següent" class="nav_seguent" role="button" title="setmana següent">
+    <i class="icon-chevron-right"></i>
+  </div>
+  <span class="mes_avui" id="literalMesAny">XXXXX</span>
 </div>
 
 <div class="hores_calendari">
- <table>
-   <thead>
-     <tr>
-       <th>&nbsp;</th>
-       <th scope="col">
-         <span class="etq_dia">Dl.</span>
-         <span class="etq_num_dia">3</span>
-       </th>
-       <th scope="col"><span class="etq_dia">Dm.</span> <span class="etq_num_dia">4</span></th>
-       <th scope="col"><span class="etq_dia">Dc.</span> <span class="etq_num_dia">5</span></th>
-       <th scope="col"><span class="etq_dia">Dj.</span> <span class="etq_num_dia">6</span></th>
-       <th class="avui" scope="col"><span class="etq_dia">Dv.</span> <span class="etq_num_dia">7</span></th>
-       <th scope="col"><span class="etq_dia">Ds.</span> <span class="etq_num_dia">8</span></th>
-       <th scope="col"><span class="etq_dia">Dg.</span> <span class="etq_num_dia">9</span></th>
-     </tr>
-   </thead>
-   <tbody id="cosCalendari">
-     <tr>
-       <td class="servei"><i class="icon-time"></i><strong>Obertura</strong></td>
-       <td class="hores" data-label="Dilluns 3">08.00 - 21.00</td>
-       <td class="hores" data-label="Dimarts 4">08.00 - 21.00</td>
-       <td class="hores" data-label="Dimecres 5">08.00 - 21.00</td>
-       <td class="hores" data-label="Dijous 6">08.00 - 21.00</td>
-       <td class="hores avui" data-label="Divendres 7">08.00 - 21.00</td>
-       <td class="hores" data-label="Dissabte 8">TANCAT</td>
-       <td class="hores" data-label="Diumenge 9">TANCAT</td>
-     </tr>
-   </tbody>
- </table>
+<table>
+	<thead>
+		<tr>
+			<th>&nbsp;</th>
+			<th scope="col">
+        <span class="etq_dia">Dll.</span>
+        <span class="etq_num_dia" id="numDll">X</span>
+      </th>
+			<th scope="col">
+        <span class="etq_dia">Dm.</span>
+        <span class="etq_num_dia" id="numDm">X</span>
+      </th>
+			<th scope="col">
+        <span class="etq_dia">Dc.</span>
+        <span class="etq_num_dia" id="numDc">X</span>
+      </th>
+			<th scope="col">
+        <span class="etq_dia">Dj.</span>
+        <span class="etq_num_dia" id="numDj">X</span>
+      </th>
+			<th class="avui" scope="col">
+        <span class="etq_dia">Dv.</span>
+        <span class="etq_num_dia" id="numDv">X</span>
+      </th>
+			<th scope="col">
+        <span class="etq_dia">Ds.</span>
+        <span class="etq_num_dia" id="numDs">X</span>
+      </th>
+			<th scope="col">
+        <span class="etq_dia">Dg.</span>
+        <span class="etq_num_dia" id="numDg">X</span>
+      </th>
+		</tr>
+	</thead>
+	<tbody id="cosCalendari">
+		<tr>
+			<td class="servei"><i class="icon-time"></i><strong>Obertura</strong></td>
+			<td class="hores" data-label="Dilluns 3">08.00 - 21.00</td>
+			<td class="hores" data-label="Dimarts 4">08.00 - 21.00</td>
+			<td class="hores" data-label="Dimecres 5">08.00 - 21.00</td>
+			<td class="hores" data-label="Dijous 6">08.00 - 21.00</td>
+			<td class="hores avui" data-label="Divendres 7">08.00 - 21.00</td>
+			<td class="hores" data-label="Dissabte 8">TANCAT</td>
+			<td class="hores" data-label="Diumenge 9">TANCAT</td>
+		</tr>
+	</tbody>
+</table>
 </div>
-
 <!--
 /**********************************************************************************************************/
 /* JS *****************************************************************************************************/
 /**********************************************************************************************************/
 -->
-
-<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 
 <script>
 
-
  var calendaris = [
    //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
+   ["Horaris-f1","upf.edu_gmje4a96i99klhnjvn4g8spbbk@group.calendar.google.com"],
+   ["Horaris-f2-A","upf.edu_me8ortlrg3qvefrp16tmp0kgu4@group.calendar.google.com"],
+   ["Horaris-f2-B","upf.edu_74252tg4d1nsnkrmhtlrgf5u1k@group.calendar.google.com"],
    ["Horaris-f3-A","upf.edu_0grre0mvt4tvq00u79sia8i3f4@group.calendar.google.com"],
    ["Horaris-f3-B","upf.edu_uh37vcprrgl9t7m4k5gr4m6a34@group.calendar.google.com"]
    ];
@@ -71,6 +91,115 @@
  var calEnCurs;
 
 
+ var diaRefCal = moment();
+
+ calculaSetmanaAvui();
+
+ function calculaSetmanaAvui(){
+   //diaRefCal = moment();
+   diaRefCal = moment("2020-2-28");
+
+   //diaRefCal.setFullYear(2020, 01, 28);
+   calculaSetmana(diaRefCal, 0);
+ }
+
+ function calculaSetmana(diaRefCal, diesShift){
+    //diaRefCal.setDate(diaRefCal.getDate()+diesShift);
+    diaRefCal.add(diesShift, 'd');
+    diaRefCal.setDate(diaRefCal.getDate()+diesShift);
+
+    var any = diaRefCal.getFullYear();
+    var mes = calculaMesCAT(diaRefCal);
+
+    document.getElementById("literalMesAny").innerHTML = mes + " " + any;
+
+    var dllRefCal = new Date();
+
+    calculaDll(diaRefCal, dllRefCal);
+
+    var diaIterador = new Date();
+    document.getElementById("numDll").innerHTML = dllRefCal.getDate();
+    //diaIterador.setDate(dllRefCal.getDate()+1);
+    diaIterador = addDays(dllRefCal, 1);
+    document.getElementById("numDm").innerHTML = diaIterador.getDate();
+    //diaIterador.setDate(diaIterador.getDate()+1);
+    diaIterador = addDays(dllRefCal, 2);
+    document.getElementById("numDc").innerHTML = diaIterador.getDate();
+    //diaIterador.setDate(diaIterador.getDate()+1);
+    diaIterador = addDays(dllRefCal, 3);
+    document.getElementById("numDj").innerHTML = diaIterador.getDate();
+    //diaIterador.setDate(diaIterador.getDate()+1);
+    diaIterador = addDays(dllRefCal, 4);
+    document.getElementById("numDv").innerHTML = diaIterador.getDate();
+    //diaIterador.setDate(diaIterador.getDate()+1);
+    diaIterador = addDays(dllRefCal, 5);
+    document.getElementById("numDs").innerHTML = diaIterador.getDate();
+    //diaIterador.setDate(diaIterador.getDate()+1);
+    diaIterador = addDays(dllRefCal, 6);
+    document.getElementById("numDg").innerHTML = diaIterador.getDate();
+ }
+ function addDays(date, days) {
+     var dayWrapper = moment(date);
+     dayWrapper.add(days, 'days');
+
+     return result;
+ }
+ function calculaDll(data,dillunsRef){
+   var diaSetmanaData = data.getDay();
+
+   if (diaSetmanaData == 0){
+     diaSetmanaData=7;
+   };
+
+   dillunsRef.setDate(data.getDate() - (diaSetmanaData - 1));
+ }
+
+
+ function calculaMesCAT(data){
+   numMes = data.getMonth()+1;
+
+   switch(numMes) {
+     case 1:
+       return "Gener";
+       break;
+     case 2:
+       return "Febrer";
+       break;
+     case 3:
+       return "Març";
+       break;
+     case 4:
+       return "Abril";
+       break;
+     case 5:
+       return "Maig";
+       break;
+     case 6:
+       return "Juny";
+       break;
+     case 7:
+       return "Juliol";
+       break;
+     case 8:
+       return "Agost";
+       break;
+     case 9:
+       return "Setembre";
+       break;
+     case 10:
+       return "Octubre";
+       break;
+     case 11:
+       return "Novembre";
+       break;
+     case 12:
+       return "Desembre";
+       break;
+     default:
+       return "ERROR";
+   }
+ }
+
   function handleClientLoad() {
       gapi.load('client', initClient);
     }
@@ -79,17 +208,21 @@
       gapi.client.init({
         apiKey: API_KEY,
         discoveryDocs:  DISCOVERY_DOCS
-      }).then(tractaCalendaris)
+      }).then(tractaCalendaris(new Date()))
     }
 
-    function tractaCalendaris(){
+    function tractaCalendaris(data){
+
       var batch = gapi.client.newBatch();
+      var setmanaDllDg = {dilluns: new Date(), diumenge: new Date()};
+
+      calculaDllDg(data,setmanaDllDg);
 
       var calRequest = function(calID) {
         return gapi.client.calendar.events.list({
           'calendarId': calID,
-          'timeMin': "2020-02-03T00:00:00+01:00",
-          'timeMax': "2020-02-10T00:00:00+01:00",
+          'timeMin': setmanaDllDg.Dilluns,
+          'timeMax': setmanaDllDg.Diumenge,
           'showDeleted': false,
           'singleEvents': true,
           'orderBy': 'startTime'
@@ -108,6 +241,26 @@
       })
     };
 
+
+    /**
+     * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+     *
+     * @param {string} message Text to be placed in pre element.
+     */
+
+function calculaDllDg(data,setmanaDllDg){
+  var Dilluns = new Date();
+  var Diumenge = new Date();
+
+  var diaSetmanaData = data.getDay();
+
+  if (diaSetmanaData == 0){
+    diaSetmanaData=7;
+  };
+
+  setmanaDllDg.dilluns.setDate(data.getDate() - (diaSetmanaData - 1));
+  setmanaDllDg.diumenge.setDate(data.getDate() + (7 - diaSetmanaData));
+}
 
 /**
  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
@@ -186,19 +339,15 @@ return i;
 
 
 </script>
-
 <script async defer src="https://apis.google.com/js/api.js"
   onload="this.onload=function(){};handleClientLoad();"
   onreadystatechange="if (this.readyState === 'complete') this.onload();">
 </script>
-
-
 <!--
 /**********************************************************************************************************/
 /* CSS ****************************************************************************************************/
 /**********************************************************************************************************/
 -->
-
 <style type="text/css">.nav_calendari {
  border-bottom: 1px solid #ddd;
  padding-bottom: 10px;
