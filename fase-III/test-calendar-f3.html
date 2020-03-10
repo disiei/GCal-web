@@ -1,51 +1,24 @@
 <h2>Horaris Poblenou</h2>
 
-<div class="nav_calendari">
-  <button onclick="calculaSetmanaAvui()"aria-label="Horaris d'avui" title="Divendres, 07 de febrer">Avui</button>
+<div class="nav_calendari"><button aria-label="Horaris d'avui" onclick="calculaSetmanaAvui()" title="Divendres, 07 de febrer">Avui</button>
 
-  <div onclick="calculaSetmana(diaRefCal,-7)" aria-label="Horaris de la setmana anterior" class="nav_anterior" role="button" title="setmana anterior">
-    <i class="icon-chevron-left"></i>
-  </div>
+<div aria-label="Horaris de la setmana anterior" class="nav_anterior" onclick="calculaSetmana(diaRefCal,-7)" role="button" title="setmana anterior"><i class="icon-chevron-left"></i></div>
 
-  <div onclick="calculaSetmana(diaRefCal,7)" aria-label="Horaris de la setmana següent" class="nav_seguent" role="button" title="setmana següent">
-    <i class="icon-chevron-right"></i>
-  </div>
-  <span class="mes_avui" id="literalMesAny">XXXXX</span>
-</div>
+<div aria-label="Horaris de la setmana següent" class="nav_seguent" onclick="calculaSetmana(diaRefCal,7)" role="button" title="setmana següent"><i class="icon-chevron-right"></i></div>
+<span class="mes_avui" id="literalMesAny">XXXXX</span></div>
 
 <div class="hores_calendari">
 <table>
 	<thead>
 		<tr>
 			<th>&nbsp;</th>
-			<th scope="col">
-        <span class="etq_dia">Dll.</span>
-        <span class="etq_num_dia" id="numDll">X</span>
-      </th>
-			<th scope="col">
-        <span class="etq_dia">Dm.</span>
-        <span class="etq_num_dia" id="numDm">X</span>
-      </th>
-			<th scope="col">
-        <span class="etq_dia">Dc.</span>
-        <span class="etq_num_dia" id="numDc">X</span>
-      </th>
-			<th scope="col">
-        <span class="etq_dia">Dj.</span>
-        <span class="etq_num_dia" id="numDj">X</span>
-      </th>
-			<th class="avui" scope="col">
-        <span class="etq_dia">Dv.</span>
-        <span class="etq_num_dia" id="numDv">X</span>
-      </th>
-			<th scope="col">
-        <span class="etq_dia">Ds.</span>
-        <span class="etq_num_dia" id="numDs">X</span>
-      </th>
-			<th scope="col">
-        <span class="etq_dia">Dg.</span>
-        <span class="etq_num_dia" id="numDg">X</span>
-      </th>
+			<th scope="col"><span class="etq_dia">Dll.</span> <span class="etq_num_dia" id="numDll">X</span></th>
+			<th scope="col"><span class="etq_dia">Dm.</span> <span class="etq_num_dia" id="numDm">X</span></th>
+			<th scope="col"><span class="etq_dia">Dc.</span> <span class="etq_num_dia" id="numDc">X</span></th>
+			<th scope="col"><span class="etq_dia">Dj.</span> <span class="etq_num_dia" id="numDj">X</span></th>
+			<th class="avui" scope="col"><span class="etq_dia">Dv.</span> <span class="etq_num_dia" id="numDv">X</span></th>
+			<th scope="col"><span class="etq_dia">Ds.</span> <span class="etq_num_dia" id="numDs">X</span></th>
+			<th scope="col"><span class="etq_dia">Dg.</span> <span class="etq_num_dia" id="numDg">X</span></th>
 		</tr>
 	</thead>
 	<tbody id="cosCalendari">
@@ -66,252 +39,223 @@
 /**********************************************************************************************************/
 /* JS *****************************************************************************************************/
 /**********************************************************************************************************/
--->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+--><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script><script>
 
-<script>
-
- var calendaris = [
-   //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
-   ["Horaris-f1","upf.edu_gmje4a96i99klhnjvn4g8spbbk@group.calendar.google.com"],
-   ["Horaris-f2-A","upf.edu_me8ortlrg3qvefrp16tmp0kgu4@group.calendar.google.com"],
-   ["Horaris-f2-B","upf.edu_74252tg4d1nsnkrmhtlrgf5u1k@group.calendar.google.com"],
-   ["Horaris-f3-A","upf.edu_0grre0mvt4tvq00u79sia8i3f4@group.calendar.google.com"],
-   ["Horaris-f3-B","upf.edu_uh37vcprrgl9t7m4k5gr4m6a34@group.calendar.google.com"]
-   ];
+  var calendaris = [
+  //cal 1 - "Horaris - cal1" de serveisweb@upf.edu
+  ["Horaris-f1","upf.edu_gmje4a96i99klhnjvn4g8spbbk@group.calendar.google.com"],
+  ["Horaris-f2-A","upf.edu_me8ortlrg3qvefrp16tmp0kgu4@group.calendar.google.com"],
+  ["Horaris-f2-B","upf.edu_74252tg4d1nsnkrmhtlrgf5u1k@group.calendar.google.com"],
+  ["Horaris-f3-A","upf.edu_0grre0mvt4tvq00u79sia8i3f4@group.calendar.google.com"],
+  ["Horaris-f3-B","upf.edu_uh37vcprrgl9t7m4k5gr4m6a34@group.calendar.google.com"]
+  ];
 
 
- /** API_KEY *********************************
- * AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM   *
- * Propietari serveisweb@upf.edu             *
- * Projecte  horarisDemo                     *
- ********************************************/
- var API_KEY = 'AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM';
- var DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
- var calEnCurs;
+  /** API_KEY *********************************
+  * AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM   *
+  * Propietari serveisweb@upf.edu             *
+  * Projecte  horarisDemo                     *
+  ********************************************/
+  var API_KEY = 'AIzaSyDxgDKDCDWTUMGBdPhGoAlIZE5I9cKA3dM';
+  var DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+
+  var diaRefCal;
+
+  function handleClientLoad() {
+    gapi.load('client', initClient);
+  }
+
+  function initClient() {
+    gapi.client.init({
+      apiKey: API_KEY,
+      discoveryDocs:  DISCOVERY_DOCS
+    }).then(calculaSetmanaAvui);
+  }
 
 
- var diaRefCal = moment();
+  function calculaSetmanaAvui(){
+    diaRefCal = moment();
+    //diaRefCal = moment("2020-02-28");
 
- calculaSetmanaAvui();
+    //diaRefCal.setFullYear(2020, 01, 28);
+    calculaSetmana(diaRefCal, 0);
+  }
 
- function calculaSetmanaAvui(){
-   //diaRefCal = moment();
-   diaRefCal = moment("2020-2-28");
-
-   //diaRefCal.setFullYear(2020, 01, 28);
-   calculaSetmana(diaRefCal, 0);
- }
-
- function calculaSetmana(diaRefCal, diesShift){
-    //diaRefCal.setDate(diaRefCal.getDate()+diesShift);
+  function calculaSetmana(diaRefCal, diesShift){
     diaRefCal.add(diesShift, 'd');
-    diaRefCal.setDate(diaRefCal.getDate()+diesShift);
 
-    var any = diaRefCal.getFullYear();
+    var any = diaRefCal.year();
     var mes = calculaMesCAT(diaRefCal);
 
     document.getElementById("literalMesAny").innerHTML = mes + " " + any;
 
-    var dllRefCal = new Date();
+    var dllRefCal = diaRefCal.clone();
+    var dgRefCal = diaRefCal.clone();
 
-    calculaDll(diaRefCal, dllRefCal);
+    calculaDllDg(diaRefCal,'dll',dllRefCal);
+    calculaDllDg(diaRefCal,'dg',dgRefCal);
 
-    var diaIterador = new Date();
-    document.getElementById("numDll").innerHTML = dllRefCal.getDate();
-    //diaIterador.setDate(dllRefCal.getDate()+1);
-    diaIterador = addDays(dllRefCal, 1);
-    document.getElementById("numDm").innerHTML = diaIterador.getDate();
-    //diaIterador.setDate(diaIterador.getDate()+1);
-    diaIterador = addDays(dllRefCal, 2);
-    document.getElementById("numDc").innerHTML = diaIterador.getDate();
-    //diaIterador.setDate(diaIterador.getDate()+1);
-    diaIterador = addDays(dllRefCal, 3);
-    document.getElementById("numDj").innerHTML = diaIterador.getDate();
-    //diaIterador.setDate(diaIterador.getDate()+1);
-    diaIterador = addDays(dllRefCal, 4);
-    document.getElementById("numDv").innerHTML = diaIterador.getDate();
-    //diaIterador.setDate(diaIterador.getDate()+1);
-    diaIterador = addDays(dllRefCal, 5);
-    document.getElementById("numDs").innerHTML = diaIterador.getDate();
-    //diaIterador.setDate(diaIterador.getDate()+1);
-    diaIterador = addDays(dllRefCal, 6);
-    document.getElementById("numDg").innerHTML = diaIterador.getDate();
- }
- function addDays(date, days) {
-     var dayWrapper = moment(date);
-     dayWrapper.add(days, 'days');
+    var iterador = moment(dllRefCal);
 
-     return result;
- }
- function calculaDll(data,dillunsRef){
-   var diaSetmanaData = data.getDay();
+    document.getElementById("numDll").innerHTML = iterador.date();
+    document.getElementById("numDm").innerHTML = iterador.add(1,"days").date();
+    document.getElementById("numDc").innerHTML = iterador.add(1,"days").date();
+    document.getElementById("numDj").innerHTML = iterador.add(1,"days").date();
+    document.getElementById("numDv").innerHTML = iterador.add(1,"days").date();
+    document.getElementById("numDs").innerHTML = iterador.add(1,"days").date();
+    document.getElementById("numDg").innerHTML = iterador.add(1,"days").date();
 
-   if (diaSetmanaData == 0){
-     diaSetmanaData=7;
-   };
+    tractaCalendaris(dllRefCal,dgRefCal);
+  }
 
-   dillunsRef.setDate(data.getDate() - (diaSetmanaData - 1));
- }
+  function calculaDllDg(data,diaSetmana,dataResultat){
+    var diaSetmanaData = dataResultat.weekday();
 
+    //dimunge torna 0, ho adaptem per que funcioni
+    if (diaSetmanaData==0){diaSetmanaData=7}
 
- function calculaMesCAT(data){
-   numMes = data.getMonth()+1;
+    //dataResultat = data.clone();
 
-   switch(numMes) {
-     case 1:
-       return "Gener";
-       break;
-     case 2:
-       return "Febrer";
-       break;
-     case 3:
-       return "Març";
-       break;
-     case 4:
-       return "Abril";
-       break;
-     case 5:
-       return "Maig";
-       break;
-     case 6:
-       return "Juny";
-       break;
-     case 7:
-       return "Juliol";
-       break;
-     case 8:
-       return "Agost";
-       break;
-     case 9:
-       return "Setembre";
-       break;
-     case 10:
-       return "Octubre";
-       break;
-     case 11:
-       return "Novembre";
-       break;
-     case 12:
-       return "Desembre";
-       break;
-     default:
-       return "ERROR";
-   }
- }
-
-  function handleClientLoad() {
-      gapi.load('client', initClient);
+    switch(diaSetmana) {
+      case 'dll':
+        dataResultat.subtract(diaSetmanaData-1, 'days');
+        break;
+      case 'dg':
+        dataResultat.add(7-diaSetmanaData, 'days');
+        break;
     }
+  }
 
-    function initClient() {
-      gapi.client.init({
-        apiKey: API_KEY,
-        discoveryDocs:  DISCOVERY_DOCS
-      }).then(tractaCalendaris(new Date()))
+  function calculaMesCAT(data){
+    numMes = data.month()+1;
+
+    switch(numMes) {
+      case 1:
+      return "Gener";
+      break;
+      case 2:
+      return "Febrer";
+      break;
+      case 3:
+      return "Març";
+      break;
+      case 4:
+      return "Abril";
+      break;
+      case 5:
+      return "Maig";
+      break;
+      case 6:
+      return "Juny";
+      break;
+      case 7:
+      return "Juliol";
+      break;
+      case 8:
+      return "Agost";
+      break;
+      case 9:
+      return "Setembre";
+      break;
+      case 10:
+      return "Octubre";
+      break;
+      case 11:
+      return "Novembre";
+      break;
+      case 12:
+      return "Desembre";
+      break;
+      default:
+      return "ERROR";
     }
+  }
 
-    function tractaCalendaris(data){
+  function tractaCalendaris(dilluns, diumenge){
+    var batch = gapi.client.newBatch();
 
-      var batch = gapi.client.newBatch();
-      var setmanaDllDg = {dilluns: new Date(), diumenge: new Date()};
-
-      calculaDllDg(data,setmanaDllDg);
-
-      var calRequest = function(calID) {
-        return gapi.client.calendar.events.list({
-          'calendarId': calID,
-          'timeMin': setmanaDllDg.Dilluns,
-          'timeMax': setmanaDllDg.Diumenge,
-          'showDeleted': false,
-          'singleEvents': true,
-          'orderBy': 'startTime'
-        });
-      };
-
-      for (var i = 0; i < calendaris.length; i++) {
-        batch.add(calRequest(calendaris[i][1]),{id:calendaris[i][0]});
-      };
-
-      batch.then(function(response) {
-        var respCalendaris = response.result;
-        for (var i = 0; i < calendaris.length; i++) {
-          tractaCalendari(calendaris[i][0], respCalendaris[calendaris[i][0]].result.items)
-        }
-      })
+    var calRequest = function(calID) {
+      return gapi.client.calendar.events.list({
+        'calendarId': calID,
+        'timeMin': dilluns.format(moment.defaultFormat),
+        'timeMax': diumenge.format(moment.defaultFormat),
+				//'timeMin': "2020-02-03T00:00:00+01:00",
+				//'timeMax': "2020-02-10T00:00:00+01:00",
+        'showDeleted': false,
+        'singleEvents': true,
+        'orderBy': 'startTime'
+      });
     };
 
+    for (var i = 0; i < calendaris.length; i++) {
+			console.log("Batch calendari desc: " + calendaris[i][0]);
+			console.log("Calendari key: " + calendaris[i][1]);
+			console.log("Time min REF: 2020-02-03T00:00:00+01:00");
+			console.log("Time min: " + dilluns.format(moment.defaultFormat));
+			console.log("Time max: " + diumenge.format(moment.defaultFormat));
 
-    /**
-     * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
-     *
-     * @param {string} message Text to be placed in pre element.
-     */
 
-function calculaDllDg(data,setmanaDllDg){
-  var Dilluns = new Date();
-  var Diumenge = new Date();
+      batch.add(calRequest(calendaris[i][1]),{id:calendaris[i][0]});
+    };
 
-  var diaSetmanaData = data.getDay();
-
-  if (diaSetmanaData == 0){
-    diaSetmanaData=7;
+    batch.then(function(response) {
+      var respCalendaris = response.result;
+      for (var i = 0; i < calendaris.length; i++) {
+        tractaCalendari(calendaris[i][0], respCalendaris[calendaris[i][0]].result.items)
+      }
+    })
   };
 
-  setmanaDllDg.dilluns.setDate(data.getDate() - (diaSetmanaData - 1));
-  setmanaDllDg.diumenge.setDate(data.getDate() + (7 - diaSetmanaData));
-}
+  /**
+  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+  *
+  * @param {string} message Text to be placed in pre element.
+  */
+  function tractaCalendari(nomCal, eventsCal){
+    var setmanaEvents = [];
 
-/**
- * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
- *
- * @param {string} message Text to be placed in pre element.
- */
- function tractaCalendari(nomCal, eventsCal){
-   var setmanaEvents = [];
+    if (eventsCal.length > 0) {
+      for (i = 0; i < eventsCal.length; i++) {
+        var event = eventsCal[i];
+        var eventStart = new Date(event.start.dateTime);
+        var eventEnd = new Date(event.end.dateTime);
+        setmanaEvents[i] = addZero(eventStart.getHours()) + ":" + addZero(eventStart.getMinutes()) + " - " + addZero(eventEnd.getHours()) + ":" + addZero(eventEnd.getMinutes());
+      }
+      generaFilaCalHTML(nomCal,setmanaEvents);
+    }
+  };
 
-   if (eventsCal.length > 0) {
-     for (i = 0; i < eventsCal.length; i++) {
-       var event = eventsCal[i];
-       var eventStart = new Date(event.start.dateTime);
-       var eventEnd = new Date(event.end.dateTime);
-       setmanaEvents[i] = addZero(eventStart.getHours()) + ":" + addZero(eventStart.getMinutes()) + " - " + addZero(eventEnd.getHours()) + ":" + addZero(eventEnd.getMinutes());
-     }
-     generaFilaCalHTML(nomCal,setmanaEvents);
-   }
- };
+  /**
+  * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
+  *
+  * @param {string} message Text to be placed in pre element.
+  */
+  function generaFilaCalHTML(nomServei,setmanaEvents){
+    //creem la fila
+    var tr = document.createElement("TR");
+    tr.setAttribute("id", nomServei);
+    document.getElementById("cosCalendari").appendChild(tr);
 
-/**
- * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
- *
- * @param {string} message Text to be placed in pre element.
- */
- function generaFilaCalHTML(nomServei,setmanaEvents){
-   //creem la fila
-   var tr = document.createElement("TR");
-   tr.setAttribute("id", nomServei);
-   document.getElementById("cosCalendari").appendChild(tr);
-
-   // afegim descripció de la fila (1a columna)
-   var strong = document.createElement("STRONG");
-   var strongText = document.createTextNode(nomServei);
-   strong.appendChild(strongText);
+    // afegim descripció de la fila (1a columna)
+    var strong = document.createElement("STRONG");
+    var strongText = document.createTextNode(nomServei);
+    strong.appendChild(strongText);
 
 
-   var italic = document.createElement("I");
-   italic.setAttribute("class", "icon-time");
+    var italic = document.createElement("I");
+    italic.setAttribute("class", "icon-time");
 
-   var td = document.createElement("TD");
-   //var textCela = document.createTextNode("<strong>" + nomServei + "</strong>");
-   tr.setAttribute("servei", nomServei);
-   td.setAttribute("class","servei");
-   td.appendChild(italic);
-   td.appendChild(strong);
-   document.getElementById(nomServei).appendChild(td);
+    var td = document.createElement("TD");
+    //var textCela = document.createTextNode("<strong>" + nomServei + "</strong>");
+    tr.setAttribute("servei", nomServei);
+    td.setAttribute("class","servei");
+    td.appendChild(italic);
+    td.appendChild(strong);
+    document.getElementById(nomServei).appendChild(td);
 
-   // afegim cel·les
-   var i;
-   for (i = 0; i < setmanaEvents.length; i++) {
+    // afegim cel·les
+    var i;
+    for (i = 0; i < setmanaEvents.length; i++) {
       var td = document.createElement("TD");
       if (i == 4){
         td.setAttribute("class","hores avui");
@@ -322,222 +266,220 @@ function calculaDllDg(data,setmanaDllDg){
       var textCela = document.createTextNode(setmanaEvents[i]);
       td.appendChild(textCela);
       document.getElementById(nomServei).appendChild(td);
-   }
- }
+    }
+  }
 
- /**
+  /**
   * https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_tr_create
   *
   * @param {string} message Text to be placed in pre element.
   */
-function addZero(i) {
-if (i < 10) {
-  i = "0" + i;
-}
-return i;
-}
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
 
 
-</script>
-<script async defer src="https://apis.google.com/js/api.js"
-  onload="this.onload=function(){};handleClientLoad();"
-  onreadystatechange="if (this.readyState === 'complete') this.onload();">
-</script>
-<!--
+</script><script async defer src="https://apis.google.com/js/api.js"
+onload="this.onload=function(){};handleClientLoad();"
+onreadystatechange="if (this.readyState === 'complete') this.onload();">
+</script><!--
 /**********************************************************************************************************/
 /* CSS ****************************************************************************************************/
 /**********************************************************************************************************/
 -->
 <style type="text/css">.nav_calendari {
- border-bottom: 1px solid #ddd;
- padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .nav_calendari button {
- border: 1px solid #ddd;
- background-color: transparent;
- padding: 5px 10px;
- margin-right: 12px;
+  border: 1px solid #ddd;
+  background-color: transparent;
+  padding: 5px 10px;
+  margin-right: 12px;
 }
 
 .nav_calendari button:hover {
- background-color: #eee;
+  background-color: #eee;
 }
 
 .nav_calendari .nav_anterior, .nav_calendari .nav_seguent {
- line-height: 32px;
- font-size: 16px;
- cursor: pointer;
- display: inline-block;
- text-align: center;
- width: 32px;
- height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  width: 32px;
+  height: 32px;
 }
 
 .nav_calendari .nav_anterior:hover, .nav_calendari .nav_seguent:hover {
- border-radius: 100%;
- background-color: #eee;
+  border-radius: 100%;
+  background-color: #eee;
 }
 
 
 .nav_calendari .mes_avui {
- font-size: 22px;
- margin-left: 12px;
+  font-size: 22px;
+  margin-left: 12px;
 }
 
 .aui .table-bordered {
- border: none;
+  border: none;
 }
 
 .aui .table-bordered th, .aui .table-bordered td {
- border: none;
- border-top: 1px solid #ddd;
- vertical-align: middle;
+  border: none;
+  border-top: 1px solid #ddd;
+  vertical-align: middle;
 }
 
 .aui .table-bordered tr:last-child td {
- border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .hores_calendari .etq_dia {
- font-family: Roboto,Helvetica,Arial,sans-serif;
- -webkit-font-smoothing: antialiased;
- text-rendering: geometricPrecision;
- line-height: 32px;
- font-size: 11px;
- font-weight: 500;
- text-transform: uppercase;
- display: flex;
- flex-direction: column;
- justify-content: center;
- margin-left: auto;
- margin-right: auto;
- width: 22px;
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  line-height: 32px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 22px;
 }
 
 .hores_calendari .etq_num_dia {
- font-family: 'Google Sans',Roboto,Arial,sans-serif;
- -webkit-font-smoothing: antialiased;
- text-rendering: geometricPrecision;
- font-weight: 400;
- text-align: center;
- z-index: 2;
- font-size: 26px;
- line-height: 46px;
- height: 46px;
- width: 46px;
- margin-left: auto;
- margin-right: auto;
- display: flex;
- flex-direction: column;
- justify-content: center;
+  font-family: 'Google Sans',Roboto,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  font-weight: 400;
+  text-align: center;
+  z-index: 2;
+  font-size: 26px;
+  line-height: 46px;
+  height: 46px;
+  width: 46px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hores_calendari td i {
- color: #ccc;
- margin-right: 8px;
- font-size: 18px;
+  color: #ccc;
+  margin-right: 8px;
+  font-size: 18px;
 }
 
 .hores_calendari td.servei{
- text-indent: -12px;
- padding-left: 25px
+  text-indent: -12px;
+  padding-left: 25px
 }
 
 .hores_calendari td.hores {
- font-family: Roboto,Helvetica,Arial,sans-serif;
- text-rendering: geometricPrecision;
- font-size: 14px;
- text-align: center;
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  text-rendering: geometricPrecision;
+  font-size: 14px;
+  text-align: center;
 }
 
 .hores_calendari table {
- border-collapse: collapse;
- margin: 0;
- padding: 0;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
 }
 
 .hores_calendari table caption {
- font-size: 1.5em;
- margin: .5em 0 .75em;
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
 }
 
 .hores_calendari table tr {
- padding: .35em;
+  padding: .35em;
 }
 
 .hores_calendari table th,
 .hores_calendari table td {
- padding: .625em;
+  padding: .625em;
 }
 
 .hores_calendari table th {
- font-size: .85em;
- letter-spacing: .1em;
- text-transform: uppercase;
- border: none!important;
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: none!important;
 }
 
 .hores_calendari table td.avui {
- background-color: #eee;
+  background-color: #eee;
 }
 
 .hores_calendari table th.avui .etq_num_dia {
- background-color: #eeb7c0;
- border-radius:100%;
+  background-color: #eeb7c0;
+  border-radius:100%;
 }
 
 
 @media screen and (max-width: 700px) {
 
- .nav_calendari .mes_avui {
-   font-size: 16px;
- }
+  .nav_calendari .mes_avui {
+    font-size: 16px;
+  }
 
- .hores_calendari table {
-   border: 0;
- }
+  .hores_calendari table {
+    border: 0;
+  }
 
- table caption {
-   font-size: 1.3em;
- }
+  table caption {
+    font-size: 1.3em;
+  }
 
- .hores_calendari table thead {
-   border: none;
-   clip: rect(0 0 0 0);
-   height: 1px;
-   margin: -1px;
-   overflow: hidden;
-   padding: 0;
-   position: absolute;
-   width: 1px;
- }
+  .hores_calendari table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
 
- .hores_calendari table tr {
-   border: none;
-   border-bottom: 3px solid #ddd;
-   display: block;
-   margin-bottom: .625em;
- }
+  .hores_calendari table tr {
+    border: none;
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
 
- .hores_calendari table td {
-   border: none;
-   border-bottom: 1px solid #ddd;
-   display: block;
- }
+  .hores_calendari table td {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    display: block;
+  }
 
- .hores_calendari td.hores {
-   text-align: right!important;
- }
+  .hores_calendari td.hores {
+    text-align: right!important;
+  }
 
- .hores_calendari table td.hores::before {
-   content: attr(data-label);
-   float: left;
-/*    text-transform: uppercase;*/
- }
+  .hores_calendari table td.hores::before {
+    content: attr(data-label);
+    float: left;
+    /*    text-transform: uppercase;*/
+  }
 
- .hores_calendari table td:last-child {
-   border-bottom: 0;
- }
+  .hores_calendari table td:last-child {
+    border-bottom: 0;
+  }
 }
 </style>
